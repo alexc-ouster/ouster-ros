@@ -199,7 +199,10 @@
 
   <!-- Only set this parameter when working with FW 3.1+ -->
   <arg name="min_distance" default="0"
-    doc="minimum lidar distance to configure to sensor (cm); available options: {0, 30, 50}"/>
+    doc="to change the sensor’s minimum reported range (cm);
+    available options (FW3.1+): {0, 30}
+    available options (FW3.2+): {0, 30, 50}"
+     />
 
   <!-- Only set this parameter when working with FW 3.2+ -->
   <arg name="bloom_reduction_optimization" default=" "
