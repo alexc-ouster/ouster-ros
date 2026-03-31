@@ -19,6 +19,8 @@
 #include <atomic>
 #include <optional>
 
+#include <ouster/client.h>
+
 #include "ouster_ros/GetConfig.h"
 #include "ouster_ros/SetConfig.h"
 #include "ouster_ros/PacketMsg.h"
