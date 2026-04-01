@@ -70,15 +70,15 @@
     OUTPUT_FROM_PTP_1588,
     OUTPUT_FROM_ENCODER_ANGLE
     }"/>
-
+ 
   <arg name="nmea_in_polarity" default="ACTIVE_HIGH"
-    doc="Set the polarity of NMEA UART input $GPRMC messages,
-      Use ACTIVE_HIGH if UART is active high, idle low, and start bit is after a falling edge.;
+    doc="Set the polarity of NMEA UART input $GPRMC messages.
+      Use ACTIVE_HIGH if UART is active high, idle low, and start bit is after a falling edge.
       possible values: {
         ACTIVE_HIGH,
         ACTIVE_LOW
     }"/>
-  
+   
   <arg name="nmea_ignore_valid_char" default="false"
     doc="Set false if NMEA UART input $GPRMC messages should be ignored if valid character is not set,
       and true if messages should be used for time syncing regardless of the valid character."/>
