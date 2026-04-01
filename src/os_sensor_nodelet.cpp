@@ -656,7 +656,8 @@ void OusterSensor::parse_phase_lock_and_offset(SensorConfig& config) {
 
 void OusterSensor::parse_min_distance(SensorConfig& config) {
     auto& nh = getPrivateNodeHandle();
-    int min_distance = nh.param("min_distance", 50);
+    auto min_distance = nh.param("min_distance", -1);
+    if (min_distance < 0) return;
     // Only allow exact values: 0, 30, or 50 (cm)
     if (min_distance != 0 && min_distance != 30 && min_distance != 50) {
         NODELET_FATAL("min_distance must be one of {0, 30, 50} cm");
