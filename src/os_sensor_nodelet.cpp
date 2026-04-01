@@ -536,26 +536,22 @@ void OusterSensor::parse_sync_pulse_out_polarity(SensorConfig& config) {
 
 void OusterSensor::parse_sync_pulse_out_frequency(SensorConfig& config) {
     auto& nh = getPrivateNodeHandle();
-    auto val = nh.param("sync_pulse_out_frequency", 0);
-    if (val <= 0) return;
+    auto val = nh.param("sync_pulse_out_frequency", -1);
+    if (val < 0) return;
     config.sync_pulse_out_frequency = val;
 }
 
 void OusterSensor::parse_sync_pulse_out_angle(SensorConfig& config) {
     auto& nh = getPrivateNodeHandle();
-    auto val = nh.param("sync_pulse_out_angle", 0);
-    if (val <= 0) return;
+    auto val = nh.param("sync_pulse_out_angle", -1);
+    if (val < 0) return;
     config.sync_pulse_out_angle = val;
 }
 
 void OusterSensor::parse_sync_pulse_out_pulse_width(SensorConfig& config) {
     auto& nh = getPrivateNodeHandle();
-    auto val = nh.param("sync_pulse_out_pulse_width", 0);
-    if (val < 0) {
-        auto error_msg = "sync_pulse_out_pulse_width must be >= 0";
-        NODELET_FATAL_STREAM(error_msg);
-        throw std::runtime_error(error_msg);
-    }
+    auto val = nh.param("sync_pulse_out_pulse_width", -1);
+    if (val < 0) return;
     config.sync_pulse_out_pulse_width = val;
 }
 

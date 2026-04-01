@@ -64,10 +64,10 @@
   <arg name="multipurpose_io_mode" default="OFF"
     doc="Configure the mode of the MULTIPURPOSE_IO pin; possible values: {
     OFF,
+    INPUT_NMEA_UART,
     OUTPUT_FROM_INTERNAL_OSC,
     OUTPUT_FROM_SYNC_PULSE_IN,
     OUTPUT_FROM_PTP_1588,
-    INPUT_NMEA_UART,
     OUTPUT_FROM_ENCODER_ANGLE
     }"/>
 
@@ -84,10 +84,9 @@
       and true if messages should be used for time syncing regardless of the valid character."/>
 
   <arg name="nmea_baud_rate" default="BAUD_9600"
-    doc="BAUD_9600 (default) or BAUD_115200 for the expected baud rate the sensor is attempting to decode for NMEA UART input $GPRMC messages;
-      possible values: {
-        BAUD_4800,
-        BAUD_9600
+    doc="Expected baud for NMEA UART $GPRMC; possible values: {
+        BAUD_9600,
+        BAUD_115200
     }"/>
   
   <arg name="nmea_leap_seconds" default="0"
@@ -101,25 +100,25 @@
         ACTIVE_LOW
     }"/>
 
-  <arg name="sync_pulse_out_polarity" default="ACTIVE_HIGH"
-    doc="The polarity of SYNC_PULSE_OUT output, if the sensor is set as the master sensor used for time synchronization.;
+  <arg name="sync_pulse_out_polarity" default="ACTIVE_LOW"
+    doc="Polarity of SYNC_PULSE_OUT when this sensor is the time-sync master;
       possible values: {
         ACTIVE_HIGH,
         ACTIVE_LOW
     }"/>
   
-  <arg name="sync_pulse_out_frequency" default="1"
+  <arg name="sync_pulse_out_frequency" default="-1"
     doc="The output SYNC_PULSE_OUT pulse rate in Hz. Valid inputs are integers >0 Hz,
     but also limited by the criteria described in the Time Synchronization section of the Firmware User Manual."/>
 
-  <arg name="sync_pulse_out_angle" default="360"
+  <arg name="sync_pulse_out_angle" default="-1"
     doc="The angle in terms of degrees that the sensor traverses between each SYNC_PULSE_OUT pulse. 
       E.g. a value of 180 means a sync pulse is sent out every 180° for a total of two pulses per revolution and angular frequency of 20 Hz;
-      values range [1, 360]"/>
+      values range [0, 360], -1 is unset"/>
 
-  <arg name="sync_pulse_out_pulse_width" default="10"
+  <arg name="sync_pulse_out_pulse_width" default="-1"
     doc="The polarity of SYNC_PULSE_OUT output, if the sensor is set as the master sensor used for time synchronization.
-      Output SYNC_PULSE_OUT pulse width is in ms, increments in 1 ms. "/>
+      Output SYNC_PULSE_OUT pulse width is in ms, increments in 1 ms. -1 is unset"/>
 
   <arg name="ptp_utc_tai_offset" default="-37.0"
     doc="UTC/TAI offset in seconds to apply when using TIME_FROM_PTP_1588"/>
