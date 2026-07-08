@@ -72,7 +72,14 @@ void map_lidar_scan_fields_to_tuple(Tuple& tp, const ouster::sdk::core::LidarSca
             std::remove_pointer_t<std::tuple_element_t<Index, Tuple>>>;
         static_assert(std::is_same_v<ElementType, FieldType>,
                       "tuple element, field element types mismatch!");
-        std::get<Index>(tp) = ls.field<FieldType>(Table[Index].first).data();
+        // To handle window field for lidar fw below 3.2.0 
+        if (!ls.has_field(Table[Index].first) &&
+            std::string(Table[Index].first) == ChanField::WINDOW) {
+            std::get<Index>(tp) = nullptr;
+        } else {
+            std::get<Index>(tp) = ls.field<FieldType>(Table[Index].first).data();
+        }
+
         map_lidar_scan_fields_to_tuple<Index + 1, N, Table>(tp, ls);
     }
 }
@@ -103,7 +110,10 @@ constexpr auto make_lidar_scan_tuple(const ouster::sdk::core::LidarScan& ls) {
 template <std::size_t Index, typename PointT, typename Tuple>
 void copy_lidar_scan_fields_to_point(PointT& pt, const Tuple& tp, int idx) {
     if constexpr (Index < std::tuple_size_v<Tuple>) {
-        point::get<5 + Index>(pt) = std::get<Index>(tp)[idx];
+        // To handle window field for lidar fw below 3.2.0 
+        const auto field = std::get<Index>(tp);
+        // If the field is nullptr, set the value to 0
+        point::get<5 + Index>(pt) = field ? field[idx] : 0;
         copy_lidar_scan_fields_to_point<Index + 1>(pt, tp, idx);
     } else {
         unused_variable(pt);
