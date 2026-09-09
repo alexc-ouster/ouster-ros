@@ -15,6 +15,8 @@ Changelog
     ``sync_pulse_out_angle``, ``sync_pulse_out_pulse_width``
   - ``min_distance`` (sensor field ``min_range_threshold_cm``)
 * [BUGFIX] Correct the order of ``FLAGS`` field.
+* [BUGFIX] Skip missing LidarScan fields when composing point clouds (e.g. ``WINDOW``
+  on firmware < 3.2) so replay no longer crashes with ``Field 'WINDOW' not found``.
 * Enable varying columns per packet.
 * Add support for Rev8 and the new RGB profiles
 * Add a ``columns_per_packet`` configuration property to launch file params.

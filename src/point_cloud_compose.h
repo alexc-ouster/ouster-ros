@@ -74,7 +74,13 @@ void map_lidar_scan_fields_to_tuple(Tuple& tp, const ouster::sdk::core::LidarSca
             std::remove_pointer_t<std::tuple_element_t<Index, Tuple>>>;
         static_assert(std::is_same_v<ElementType, FieldType>,
                       "tuple element, field element types mismatch!");
-        std::get<Index>(tp) = ls.field<FieldType>(Table[Index].first).data();
+        // Some fields (e.g. WINDOW) are profile defaults but omitted from the
+        // LidarScan on older firmware (FW < 3.2). Leave a null pointer so copy
+        // can fill zeros instead of throwing.
+        std::get<Index>(tp) =
+            ls.has_field(Table[Index].first)
+                ? ls.field<FieldType>(Table[Index].first).data()
+                : nullptr;
         map_lidar_scan_fields_to_tuple<Index + 1, N, Table>(tp, ls);
     }
 }
@@ -105,7 +111,8 @@ constexpr auto make_lidar_scan_tuple(const ouster::sdk::core::LidarScan& ls) {
 template <std::size_t Index, typename PointT, typename Tuple>
 void copy_lidar_scan_fields_to_point(PointT& pt, const Tuple& tp, int idx) {
     if constexpr (Index < std::tuple_size_v<Tuple>) {
-        point::get<5 + Index>(pt) = std::get<Index>(tp)[idx];
+        const auto* src = std::get<Index>(tp);
+        point::get<5 + Index>(pt) = src ? src[idx] : 0;
         copy_lidar_scan_fields_to_point<Index + 1>(pt, tp, idx);
     } else {
         unused_variable(pt);
